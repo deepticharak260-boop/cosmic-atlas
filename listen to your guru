@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cosmic Atlas – Astronomy & Space Science</title>
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    overflow-x: hidden;
+}
+
+header {
+    background: linear-gradient(to right, #020024, #090979, #00d4ff);
+    padding: 20px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+section {
+    padding: 50px;
+    border-bottom: 1px solid #222;
+}
+
+h2 {
+    color: #00d4ff;
+}
+
+canvas {
+    display: block;
+    margin: 20px auto;
+    background: #000;
+    border: 1px solid #00d4ff;
+}
+
+button {
+    padding: 10px 20px;
+    background: #00d4ff;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #020024;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>🌌 Cosmic Atlas</h1>
+<p>Exploring Astronomy, Space Science & the Universe</p>
+<nav>
+<a href="#astronomy">Astronomy</a>
+<a href="#kepler">Kepler-22b</a>
+<a href="#blackhole">Black Holes</a>
+<a href="#rockets">Rocket Simulator</a>
+</nav>
+</header>
+
+<section id="astronomy">
+<h2>What is Astronomy?</h2>
+<p>
+Astronomy is a natural science that studies celestial objects such as planets,
+stars, galaxies, black holes, and the universe itself. It explains their origin,
+evolution, and behavior using physics, chemistry, and mathematics.
+</p>
+</section>
+
+<section id="kepler">
+<h2>Kepler-22b Simulator</h2>
+<p>
+Kepler-22b is an exoplanet located 640 light-years away. It orbits within the
+habitable zone of its star, meaning liquid water could exist.
+</p>
+
+<canvas id="orbit" width="400" height="400"></canvas>
+</section>
+
+<section id="blackhole">
+<h2>Black Hole Gravity Simulator</h2>
+<p>
+Black holes are regions of spacetime where gravity is so strong that nothing,
+not even light, can escape.
+</p>
+
+<canvas id="bh" width="400" height="300"></canvas>
+</section>
+
+<section id="rockets">
+<h2>Rocket Launch Simulator</h2>
+<p>
+Rocket engineering advanced rapidly during the Cold War, leading to Apollo
+missions and modern space exploration.
+</p>
+<button onclick="launch()">Launch Rocket 🚀</button>
+<canvas id="rocket" width="200" height="400"></canvas>
+</section>
+
+<footer>
+<p>© Cosmic Atlas | Astronomy Education Website</p>
+</footer>
+
+<script>
+// KEPLER ORBIT SIMULATION
+const orbit = document.getElementById("orbit");
+const octx = orbit.getContext("2d");
+let angle = 0;
+
+function drawOrbit() {
+    octx.clearRect(0,0,400,400);
+    octx.fillStyle = "yellow";
+    octx.beginPath();
+    octx.arc(200,200,10,0,Math.PI*2);
+    octx.fill();
+
+    const x = 200 + 120 * Math.cos(angle);
+    const y = 200 + 120 * Math.sin(angle);
+
+    octx.fillStyle = "#00d4ff";
+    octx.beginPath();
+    octx.arc(x,y,8,0,Math.PI*2);
+    octx.fill();
+
+    angle += 0.01;
+    requestAnimationFrame(drawOrbit);
+}
+drawOrbit();
+
+// BLACK HOLE SIMULATION
+const bh = document.getElementById("bh");
+const bctx = bh.getContext("2d");
+let stars = Array.from({length:50},()=>({
+    x:Math.random()*400,
+    y:Math.random()*300
+}));
+
+function drawBH(){
+    bctx.clearRect(0,0,400,300);
+    bctx.fillStyle="black";
+    bctx.fillRect(0,0,400,300);
+
+    bctx.fillStyle="purple";
+    bctx.beginPath();
+    bctx.arc(200,150,20,0,Math.PI*2);
+    bctx.fill();
+
+    stars.forEach(s=>{
+        s.x += (200 - s.x) * 0.01;
+        s.y += (150 - s.y) * 0.01;
+        bctx.fillStyle="white";
+        bctx.fillRect(s.x,s.y,2,2);
+    });
+
+    requestAnimationFrame(drawBH);
+}
+drawBH();
+
+// ROCKET SIMULATION
+const rocketCanvas = document.getElementById("rocket");
+const rctx = rocketCanvas.getContext("2d");
+let ry = 350;
+
+function launch(){
+    function animate(){
+        rctx.clearRect(0,0,200,400);
+        rctx.fillStyle="white";
+        rctx.fillRect(90,ry,20,40);
+        rctx.fillStyle="orange";
+        rctx.fillRect(95,ry+40,10,10);
+        ry -= 2;
+        if(ry > -50) requestAnimationFrame(animate);
+    }
+    animate();
+}
+</script>
+
+</body>
+</html>
